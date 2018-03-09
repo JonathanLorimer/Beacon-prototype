@@ -6,6 +6,7 @@ class Neighbourhood < ApplicationRecord
     {
       id: id,
       name: name,
+      city_id: city_id,
       created_at: created_at,
       updated_at: updated_at
     }
