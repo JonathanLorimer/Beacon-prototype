@@ -6,6 +6,7 @@ class Region < ApplicationRecord
     {
       id: id,
       name: name,
+      country_id: country_id,
       created_at: created_at,
       updated_at: updated_at
     }

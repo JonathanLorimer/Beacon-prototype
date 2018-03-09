@@ -6,6 +6,7 @@ class City < ApplicationRecord
     {
       id: id,
       name: name,
+      region_id: region_id,
       created_at: created_at,
       updated_at: updated_at
     }
