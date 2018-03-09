@@ -12,6 +12,7 @@ class Location < ApplicationRecord
       latitude: latitude,
       longitude: longitude,
       category: category,
+      district_id: district_id,
       created_at: created_at,
       updated_at: updated_at
     }
