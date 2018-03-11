@@ -5,6 +5,7 @@ class DistrictsController < ApplicationController
   end
 
   def show
+    @district = District.find(params[:id])
     render json: {data:@district}
   end
 
