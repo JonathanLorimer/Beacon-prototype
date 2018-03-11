@@ -9,7 +9,7 @@ class Region < ApplicationRecord
       country_id: country_id,
       created_at: created_at,
       updated_at: updated_at,
-      cities_ids: cities.to_a.map{ |city| city.region_id}
+      cities_ids: cities.to_a.map{ |city| city.id}
     }
   end
 end
