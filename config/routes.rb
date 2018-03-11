@@ -16,6 +16,32 @@ Rails.application.routes.draw do
   resources :districts, only: [:index, :show]
   resources :locations, only: [:index, :show]
 
+  # resources :continents, only:[:index, :show] do
+  #   resources :countries, only: [:index, :show]
+  # end 
+
+  # resources :countries, only: [:index, :show] do
+  #   resources :regions, only: [:index, :show]
+  # end 
+
+  # resources :regions, only: [:index, :show] do
+  #   resources :cities, only:[:index, :show]
+  # end 
+
+  # resources :cities, only:[:index, :show] do
+  #   resources :neighbourhoods, only: [:index, :show]
+  # end 
+
+  # resources :neighbourhoods, only: [:index, :show] do
+  #   resources :districts, only: [:index, :show]
+  # end
+
+  # resources :districts, only: [:index, :show] do
+  #   resources :locations, only: [:index, :show]
+  # end
+
+  # resources :districts, only: [:index, :show]
+  # resources :locations, only: [:index, :show]
 
 
 end
