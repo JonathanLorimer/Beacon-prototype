@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180308201359) do
+ActiveRecord::Schema.define(version: 20180311010153) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -33,6 +33,10 @@ ActiveRecord::Schema.define(version: 20180308201359) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "greatest_lat"
+    t.integer "least_lat"
+    t.integer "greatest_lng"
+    t.integer "least_lng"
   end
 
   create_table "countries", force: :cascade do |t|
@@ -97,13 +101,13 @@ ActiveRecord::Schema.define(version: 20180308201359) do
     t.datetime "updated_at", null: false
   end
 
-  add_foreign_key "cities", "regions", column: "region_id"
-  add_foreign_key "countries", "continents", column: "continent_id"
-  add_foreign_key "districts", "neighbourhoods", column: "neighbourhood_id"
-  add_foreign_key "locations", "category_achievements", column: "category_achievement_id"
-  add_foreign_key "locations", "districts", column: "district_id"
-  add_foreign_key "neighbourhoods", "cities", column: "city_id"
-  add_foreign_key "regions", "countries", column: "country_id"
-  add_foreign_key "user_locations", "locations", column: "location_id"
-  add_foreign_key "user_locations", "users", column: "user_id"
+  add_foreign_key "cities", "regions"
+  add_foreign_key "countries", "continents"
+  add_foreign_key "districts", "neighbourhoods"
+  add_foreign_key "locations", "category_achievements"
+  add_foreign_key "locations", "districts"
+  add_foreign_key "neighbourhoods", "cities"
+  add_foreign_key "regions", "countries"
+  add_foreign_key "user_locations", "locations"
+  add_foreign_key "user_locations", "users"
 end
