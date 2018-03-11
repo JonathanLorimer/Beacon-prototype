@@ -56,45 +56,129 @@ json["filter_array"].each do |item|
   if item["type"] == "Sights & Landmarks"
     location = district.locations.find_or_create_by! ({
       name: item["name"],
-      latitude: item["latitude"],
-      longitude: item["longitude"],
+      latitude: item["latitude"].to_f,
+      longitude: item["longitude"].to_f,
       category: item["type"],
       category_achievement: sights_and_landmarks
     })
   elsif item["type"] == "Museums"
     location = district.locations.find_or_create_by! ({
       name: item["name"],
-      latitude: item["latitude"],
-      longitude: item["longitude"],
+      latitude: item["latitude"].to_f,
+      longitude: item["longitude"].to_f,
       category: item["type"],
       category_achievement: museums
     })
   elsif item["type"] == "Zoos & Aquariums"
     location = district.locations.find_or_create_by! ({
       name: item["name"],
-      latitude: item["latitude"],
-      longitude: item["longitude"],
+      latitude: item["latitude"].to_f,
+      longitude: item["longitude"].to_f,
       category: item["type"],
       category_achievement: zoos_and_aquariums
     })
   elsif item["type"] == "Nature & Parks"
     location = district.locations.find_or_create_by! ({
       name: item["name"],
-      latitude: item["latitude"],
-      longitude: item["longitude"],
+      latitude: item["latitude"].to_f,
+      longitude: item["longitude"].to_f,
       category: item["type"],
       category_achievement: nature_and_parks
     })
   elsif item["type"] == "Water & Amusement Parks"
     location = district.locations.find_or_create_by! ({
       name: item["name"],
-      latitude: item["latitude"],
-      longitude: item["longitude"],
+      latitude: item["latitude"].to_f,
+      longitude: item["longitude"].to_f,
       category: item["type"],
       category_achievement: water_and_amusement_parks
     })
   end
 end
 
+canada.reload
+
+canada.regions.each do |region|
+  region.cities.each do |city|
+      city_location_count = 0
+      city.neighbourhoods.each do |neighbourhood|
+        neighbourhood.districts.each do |district|
+        city_location_count+=district.locations.length
+        end
+      end
+    if city_location_count < 20
+      city.neighbourhoods.each do |neighbourhood|
+        neighbourhood.districts.each do |district|
+          district.locations.each do |location|
+            location.destroy
+          end
+          district.destroy
+        end
+        neighbourhood.destroy
+      end
+      city.destroy
+    end
+  end
+end
+
+canada.reload
+
+canada.regions.each do |region|
+  region.cities.each do |city|
+    city.neighbourhoods.each do |neighbourhood|
+      neighbourhood.districts.each do |district|
+        district.greatest_lat = district.locations.maximum('latitude')
+        district.least_lat = district.locations.minimum('latitude')
+        district.greatest_lng = district.locations.maximum('longitude')
+        district.least_lng = district.locations.minimum('longitude')
+        district.save
+      end
+    end
+  end
+end
+
+canada.reload
+
+canada.regions.each do |region|
+  region.cities.each do |city|
+    city.neighbourhoods.each do |neighbourhood|
+      neighbourhood.greatest_lat = neighbourhood.districts.maximum('greatest_lat')
+      neighbourhood.least_lat = neighbourhood.districts.minimum('least_lat')
+      neighbourhood.greatest_lng = neighbourhood.districts.maximum('greatest_lng')
+      neighbourhood.least_lng = neighbourhood.districts.minimum('least_lng')
+      neighbourhood.save
+    end
+  end
+end
+
+canada.reload
+
+canada.regions.each do |region|
+  region.cities.each do |city|
+    city.greatest_lat = city.neighbourhoods.maximum('greatest_lat')
+    city.least_lat = city.neighbourhoods.minimum('least_lat')
+    city.greatest_lng = city.neighbourhoods.maximum('greatest_lng')
+    city.least_lng = city.neighbourhoods.minimum('least_lng')
+    city.save
+  end
+end
+
+canada.reload
+
+canada.regions.each do |region|
+  region.greatest_lat = region.cities.maximum('greatest_lat')
+  region.least_lat = region.cities.minimum('least_lat')
+  region.greatest_lng = region.cities.maximum('greatest_lng')
+  region.least_lng = region.cities.minimum('least_lng')
+  region.save
+end
+
+canada.reload
+
+canada.greatest_lat = canada.regions.maximum('greatest_lat')
+canada.least_lat = canada.regions.minimum('least_lat')
+canada.greatest_lng = canada.regions.maximum('greatest_lng')
+canada.least_lng = canada.regions.minimum('least_lng')
+canada.save
 
 puts "DONE!"
