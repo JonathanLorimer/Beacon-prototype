@@ -1,5 +1,5 @@
 class Location < ApplicationRecord
-  belongs_to :district
+  belongs_to :neighbourhood
   belongs_to :category_achievement
 
   has_many :user_locations
@@ -12,7 +12,7 @@ class Location < ApplicationRecord
       latitude: latitude,
       longitude: longitude,
       category: category,
-      district_id: district_id,
+      neighbourhood_id: neighbourhood_id,
       created_at: created_at,
       updated_at: updated_at
     }

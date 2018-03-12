@@ -1,7 +1,7 @@
 class LocationsController < ApplicationController
   def index
-    if params[:district_id]
-      @locations = Location.where(district_id: params[:district_id])
+    if params[:neighbourhood_id]
+      @locations = Location.where(neighbourhood_id: params[:neighbourhood_id])
       render json: {data: @locations}
     else
       @locations = Location.all
