@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180308201359) do
+ActiveRecord::Schema.define(version: 20180311172136) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -26,6 +26,10 @@ ActiveRecord::Schema.define(version: 20180308201359) do
     t.bigint "region_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.float "greatest_lat"
+    t.float "least_lat"
+    t.float "greatest_lng"
+    t.float "least_lng"
     t.index ["region_id"], name: "index_cities_on_region_id"
   end
 
@@ -33,6 +37,10 @@ ActiveRecord::Schema.define(version: 20180308201359) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.float "greatest_lat"
+    t.float "least_lat"
+    t.float "greatest_lng"
+    t.float "least_lng"
   end
 
   create_table "countries", force: :cascade do |t|
@@ -40,6 +48,10 @@ ActiveRecord::Schema.define(version: 20180308201359) do
     t.bigint "continent_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.float "greatest_lat"
+    t.float "least_lat"
+    t.float "greatest_lng"
+    t.float "least_lng"
     t.index ["continent_id"], name: "index_countries_on_continent_id"
   end
 
@@ -48,13 +60,17 @@ ActiveRecord::Schema.define(version: 20180308201359) do
     t.bigint "neighbourhood_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.float "greatest_lat"
+    t.float "least_lat"
+    t.float "greatest_lng"
+    t.float "least_lng"
     t.index ["neighbourhood_id"], name: "index_districts_on_neighbourhood_id"
   end
 
   create_table "locations", force: :cascade do |t|
     t.string "name"
-    t.string "latitude"
-    t.string "longitude"
+    t.float "latitude"
+    t.float "longitude"
     t.string "category"
     t.bigint "district_id"
     t.bigint "category_achievement_id"
@@ -69,12 +85,20 @@ ActiveRecord::Schema.define(version: 20180308201359) do
     t.bigint "city_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.float "greatest_lat"
+    t.float "least_lat"
+    t.float "greatest_lng"
+    t.float "least_lng"
     t.index ["city_id"], name: "index_neighbourhoods_on_city_id"
   end
 
   create_table "regions", force: :cascade do |t|
     t.string "name"
     t.bigint "country_id"
+    t.float "greatest_lat"
+    t.float "least_lat"
+    t.float "greatest_lng"
+    t.float "least_lng"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["country_id"], name: "index_regions_on_country_id"
@@ -97,13 +121,13 @@ ActiveRecord::Schema.define(version: 20180308201359) do
     t.datetime "updated_at", null: false
   end
 
-  add_foreign_key "cities", "regions", column: "region_id"
-  add_foreign_key "countries", "continents", column: "continent_id"
-  add_foreign_key "districts", "neighbourhoods", column: "neighbourhood_id"
-  add_foreign_key "locations", "category_achievements", column: "category_achievement_id"
-  add_foreign_key "locations", "districts", column: "district_id"
-  add_foreign_key "neighbourhoods", "cities", column: "city_id"
-  add_foreign_key "regions", "countries", column: "country_id"
-  add_foreign_key "user_locations", "locations", column: "location_id"
-  add_foreign_key "user_locations", "users", column: "user_id"
+  add_foreign_key "cities", "regions"
+  add_foreign_key "countries", "continents"
+  add_foreign_key "districts", "neighbourhoods"
+  add_foreign_key "locations", "category_achievements"
+  add_foreign_key "locations", "districts"
+  add_foreign_key "neighbourhoods", "cities"
+  add_foreign_key "regions", "countries"
+  add_foreign_key "user_locations", "locations"
+  add_foreign_key "user_locations", "users"
 end

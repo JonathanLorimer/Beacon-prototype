@@ -5,6 +5,7 @@ class RegionsController < ApplicationController
   end
 
   def show
-    render json: {data:@regions}
+    @region = Region.find(params[:id])
+    render json: {data:@region}
   end
 end
