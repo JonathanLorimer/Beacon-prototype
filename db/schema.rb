@@ -55,29 +55,17 @@ ActiveRecord::Schema.define(version: 20180311172136) do
     t.index ["continent_id"], name: "index_countries_on_continent_id"
   end
 
-  create_table "districts", force: :cascade do |t|
-    t.string "name"
-    t.bigint "neighbourhood_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.float "greatest_lat"
-    t.float "least_lat"
-    t.float "greatest_lng"
-    t.float "least_lng"
-    t.index ["neighbourhood_id"], name: "index_districts_on_neighbourhood_id"
-  end
-
   create_table "locations", force: :cascade do |t|
     t.string "name"
     t.float "latitude"
     t.float "longitude"
     t.string "category"
-    t.bigint "district_id"
+    t.bigint "neighbourhood_id"
     t.bigint "category_achievement_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["category_achievement_id"], name: "index_locations_on_category_achievement_id"
-    t.index ["district_id"], name: "index_locations_on_district_id"
+    t.index ["neighbourhood_id"], name: "index_locations_on_neighbourhood_id"
   end
 
   create_table "neighbourhoods", force: :cascade do |t|
@@ -123,9 +111,8 @@ ActiveRecord::Schema.define(version: 20180311172136) do
 
   add_foreign_key "cities", "regions"
   add_foreign_key "countries", "continents"
-  add_foreign_key "districts", "neighbourhoods"
   add_foreign_key "locations", "category_achievements"
-  add_foreign_key "locations", "districts"
+  add_foreign_key "locations", "neighbourhoods"
   add_foreign_key "neighbourhoods", "cities"
   add_foreign_key "regions", "countries"
   add_foreign_key "user_locations", "locations"

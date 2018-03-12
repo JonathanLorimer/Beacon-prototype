@@ -14,7 +14,7 @@ def open_asset(file_name)
   File.open(Rails.root.join('db', 'seed_assets', file_name))
 end
 
-json = ActiveSupport::JSON.decode(File.read('db/canada_data_neighbourhood.json'))
+json = ActiveSupport::JSON.decode(File.read('db/canada_data_postal_code_v2.json'))
 
 # Only run on development (local) instances not on production, etc.
 unless Rails.env.development?
@@ -52,9 +52,8 @@ json["filter_array"].each do |item|
   region = canada.regions.find_or_create_by! name: item["region"]
   city = region.cities.find_or_create_by! name: item["city"]
   neighbourhood = city.neighbourhoods.find_or_create_by! name: item["neighbourhood"]
-  district = neighbourhood.districts.find_or_create_by! name: item["neighbourhood"]
   if item["type"] == "Sights & Landmarks"
-    location = district.locations.find_or_create_by! ({
+    location = neighbourhood.locations.find_or_create_by! ({
       name: item["name"],
       latitude: item["latitude"].to_f,
       longitude: item["longitude"].to_f,
@@ -62,7 +61,7 @@ json["filter_array"].each do |item|
       category_achievement: sights_and_landmarks
     })
   elsif item["type"] == "Museums"
-    location = district.locations.find_or_create_by! ({
+    location = neighbourhood.locations.find_or_create_by! ({
       name: item["name"],
       latitude: item["latitude"].to_f,
       longitude: item["longitude"].to_f,
@@ -70,7 +69,7 @@ json["filter_array"].each do |item|
       category_achievement: museums
     })
   elsif item["type"] == "Zoos & Aquariums"
-    location = district.locations.find_or_create_by! ({
+    location = neighbourhood.locations.find_or_create_by! ({
       name: item["name"],
       latitude: item["latitude"].to_f,
       longitude: item["longitude"].to_f,
@@ -78,7 +77,7 @@ json["filter_array"].each do |item|
       category_achievement: zoos_and_aquariums
     })
   elsif item["type"] == "Nature & Parks"
-    location = district.locations.find_or_create_by! ({
+    location = neighbourhood.locations.find_or_create_by! ({
       name: item["name"],
       latitude: item["latitude"].to_f,
       longitude: item["longitude"].to_f,
@@ -86,7 +85,7 @@ json["filter_array"].each do |item|
       category_achievement: nature_and_parks
     })
   elsif item["type"] == "Water & Amusement Parks"
-    location = district.locations.find_or_create_by! ({
+    location = neighbourhood.locations.find_or_create_by! ({
       name: item["name"],
       latitude: item["latitude"].to_f,
       longitude: item["longitude"].to_f,
@@ -100,19 +99,14 @@ canada.reload
 
 canada.regions.each do |region|
   region.cities.each do |city|
-      city_location_count = 0
-      city.neighbourhoods.each do |neighbourhood|
-        neighbourhood.districts.each do |district|
-        city_location_count+=district.locations.length
-        end
-      end
-    if city_location_count < 20
-      city.neighbourhoods.each do |neighbourhood|
-        neighbourhood.districts.each do |district|
-          district.locations.each do |location|
-            location.destroy
-          end
-          district.destroy
+    city_location_count = 0
+    city.neighbourhoods.each do |neighbourhood|
+      city_location_count+=neighbourhood.locations.length
+    end
+  if city_location_count < 15
+    city.neighbourhoods.each do |neighbourhood|
+      neighbourhood.locations.each do |location|
+          location.destroy
         end
         neighbourhood.destroy
       end
@@ -126,26 +120,10 @@ canada.reload
 canada.regions.each do |region|
   region.cities.each do |city|
     city.neighbourhoods.each do |neighbourhood|
-      neighbourhood.districts.each do |district|
-        district.greatest_lat = district.locations.maximum('latitude')
-        district.least_lat = district.locations.minimum('latitude')
-        district.greatest_lng = district.locations.maximum('longitude')
-        district.least_lng = district.locations.minimum('longitude')
-        district.save
-      end
-    end
-  end
-end
-
-canada.reload
-
-canada.regions.each do |region|
-  region.cities.each do |city|
-    city.neighbourhoods.each do |neighbourhood|
-      neighbourhood.greatest_lat = neighbourhood.districts.maximum('greatest_lat')
-      neighbourhood.least_lat = neighbourhood.districts.minimum('least_lat')
-      neighbourhood.greatest_lng = neighbourhood.districts.maximum('greatest_lng')
-      neighbourhood.least_lng = neighbourhood.districts.minimum('least_lng')
+      neighbourhood.greatest_lat = neighbourhood.locations.maximum('latitude')
+      neighbourhood.least_lat = neighbourhood.locations.minimum('latitude')
+      neighbourhood.greatest_lng = neighbourhood.locations.maximum('longitude')
+      neighbourhood.least_lng = neighbourhood.locations.minimum('longitude')
       neighbourhood.save
     end
   end
