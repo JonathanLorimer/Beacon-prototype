@@ -8,7 +8,8 @@ class Neighbourhood < ApplicationRecord
       name: name,
       city_id: city_id,
       created_at: created_at,
-      updated_at: updated_at
+      updated_at: updated_at,
+      districts_ids: districts.to_a.map{ |district| district.neighbourhood_id}
     }
   end
 end

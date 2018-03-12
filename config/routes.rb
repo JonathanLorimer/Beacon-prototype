@@ -10,12 +10,49 @@ Rails.application.routes.draw do
 
   resources :continents, only:[:index, :show]
   resources :countries, only: [:index, :show]
-  resources :regions, only: [:index, :show]
-  resources :cities, only:[:index, :show]
-  resources :neighbourhoods, only: [:index, :show]
-  resources :districts, only: [:index, :show]
-  resources :locations, only: [:index, :show]
 
+  resources :regions, only: [:index, :show] do
+    resources :cities, only:[:index, :show]
+  end
+
+  resources :cities, only:[:index, :show] do
+    resources :neighbourhoods, only: [:index, :show]
+  end
+
+  resources :neighbourhoods, only: [:index, :show] do
+    resources :districts, only: [:index, :show]
+  end
+  
+  resources :districts, only: [:index, :show] do
+    resources :locations, only: [:index, :show]
+  end
+
+  # resources :continents, only:[:index, :show] do
+  #   resources :countries, only: [:index, :show]
+  # end 
+
+  # resources :countries, only: [:index, :show] do
+  #   resources :regions, only: [:index, :show]
+  # end 
+
+  # resources :regions, only: [:index, :show] do
+  #   resources :cities, only:[:index, :show]
+  # end 
+
+  # resources :cities, only:[:index, :show] do
+  #   resources :neighbourhoods, only: [:index, :show]
+  # end 
+
+  # resources :neighbourhoods, only: [:index, :show] do
+  #   resources :districts, only: [:index, :show]
+  # end
+
+  # resources :districts, only: [:index, :show] do
+  #   resources :locations, only: [:index, :show]
+  # end
+
+  # resources :districts, only: [:index, :show]
+  # resources :locations, only: [:index, :show]
 
 
 end
