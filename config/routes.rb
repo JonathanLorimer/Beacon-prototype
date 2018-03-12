@@ -20,12 +20,12 @@ Rails.application.routes.draw do
   end
 
   resources :neighbourhoods, only: [:index, :show] do
-    resources :districts, only: [:index, :show]
-  end
-  
-  resources :districts, only: [:index, :show] do
     resources :locations, only: [:index, :show]
   end
+  
+  # resources :districts, only: [:index, :show] do
+    
+  # end
 
   # resources :continents, only:[:index, :show] do
   #   resources :countries, only: [:index, :show]
