@@ -14,7 +14,7 @@ def open_asset(file_name)
   File.open(Rails.root.join('db', 'seed_assets', file_name))
 end
 
-json = ActiveSupport::JSON.decode(File.read('db/canada_seed_data.json'))
+json = ActiveSupport::JSON.decode(File.read('db/canada_data_neighbourhood.json'))
 
 # Only run on development (local) instances not on production, etc.
 unless Rails.env.development?
