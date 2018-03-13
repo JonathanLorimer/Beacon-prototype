@@ -4,7 +4,7 @@ class User < ApplicationRecord
   has_many :user_locations
   has_many :locations, through: :user_location
 
-  validates :name, presence:true
+  validates :username, presence:true
   validates :email, presence:true,
                     uniqueness: { case_sensitive: false }
   validates :password, presence:true
