@@ -3,7 +3,9 @@ Rails.application.routes.draw do
   # root to: '/'
 
   resources :users, only: [:index, :show, :new, :create]
-  resource :session, only: [:new, :create, :destroy]
+
+  resource :sessions, only: [:new, :create, :destroy]
+
 
   resources :coordinates, only: [:index, :show, :new, :create]
 
