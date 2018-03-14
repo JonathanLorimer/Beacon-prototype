@@ -3,7 +3,7 @@ class Location < ApplicationRecord
   belongs_to :category_achievement
 
   has_many :user_locations
-  has_many :users, through: :user_location
+  has_many :users, through: :user_locations
 
   def as_json(options={})
     {
