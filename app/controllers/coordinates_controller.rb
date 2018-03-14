@@ -9,6 +9,8 @@ class CoordinatesController < ApplicationController
   def show
   end
 
+
+
   def create
     parsedCoord = JSON.parse(request.raw_post)
    
@@ -16,13 +18,19 @@ class CoordinatesController < ApplicationController
     @longitude = parsedCoord['longitude'].to_f
 
     find_region(@latitude, @longitude)
-    
-    
+    @user = User.find(1)
+    puts @user.attributes
+    puts @location.name
+    new_user_location = @user.user_locations.create({
+      location_id: @location.id
+    })
+    new_user_location.save!
     
     render json: {data:'null'}
   end
 
   private
+
     def find_region(latitude, longitude)
       regions = Region.all
       @region = "Not Found" 
