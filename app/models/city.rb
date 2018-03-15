@@ -9,7 +9,11 @@ class City < ApplicationRecord
       region_id: region_id,
       created_at: created_at,
       updated_at: updated_at,
-      neighbourhoods_ids: neighbourhoods.to_a.map{ |neighbourhood| neighbourhood.city_id}
+      neighbourhoods_ids: neighbourhoods.to_a.map{ |neighbourhood| neighbourhood.city_id},
+      least_lat: least_lat,
+      greatest_lat: greatest_lat,
+      least_lng: least_lng,
+      greatest_lng: greatest_lng
     }
   end
 end
