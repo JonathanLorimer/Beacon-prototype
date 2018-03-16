@@ -19,16 +19,10 @@ class User < ApplicationRecord
       email: email,
       password: password_digest,
       created_at: created_at,
-      updated_at: updated_at
+      updated_at: updated_at,
+      locations: @locations
     }
   end
 
-  #   def self.authenticate_with_credentials(email, password)
-  #    email_valid = email.downcase.strip
-  #    user = User.find_by(email:email_valid)
-  #      if user && user.authenticate(password)
-  #       user
-  #     end
-  # end
 
 end
