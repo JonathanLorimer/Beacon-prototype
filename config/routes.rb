@@ -2,7 +2,9 @@ Rails.application.routes.draw do
 
   # root to: '/'
 
-  resources :users, only: [:index, :show, :new, :create]
+  resources :users, only: [:index, :show, :new, :create] do
+    resources :diaries, only: [:index, :show]
+  end
 
   resource :sessions, only: [:new, :create, :destroy]
 
@@ -24,4 +26,5 @@ Rails.application.routes.draw do
     resources :locations, only: [:index, :show]
   end
 
-end
+  resources :locations, only: [:index, :show]
+  end
