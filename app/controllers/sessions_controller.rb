@@ -10,7 +10,7 @@ class SessionsController < ApplicationController
 
     if @user && @user.authenticate(params[:password])
       @achievements = {
-        locations: [],
+        locations: {},
         neighbourhoods: [],
         cities: [],
         regions: [],
@@ -65,7 +65,7 @@ class SessionsController < ApplicationController
 
       # We organize our locations by neigh id keys     
       locations.each do |location|
-        @achievements[:locations] << location #achievements is returned to the React client
+        @achievements[:locations][location.id] = location #achievements is returned to the React client
         if !locations_by_neigh[location.neighbourhood_id]
           locations_by_neigh[location.neighbourhood_id] = []
         end
