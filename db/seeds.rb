@@ -14,7 +14,7 @@ def open_asset(file_name)
   File.open(Rails.root.join('db', 'seed_assets', file_name))
 end
 
-json = ActiveSupport::JSON.decode(File.read('db/7_canada_data_postal_code_v2.json'))
+json = ActiveSupport::JSON.decode(File.read('db/8_data_outlier_free.json'))
 
 # Only run on development (local) instances not on production, etc.
 unless Rails.env.development?
@@ -158,5 +158,26 @@ canada.least_lat = canada.regions.minimum('least_lat')
 canada.greatest_lng = canada.regions.maximum('greatest_lng')
 canada.least_lng = canada.regions.minimum('least_lng')
 canada.save
+
+puts "Creating User Locations"
+puts testuser1.id
+puts testuser2.id
+
+x = 1
+while x <= 100
+  testuser1.user_locations.create! ({
+    location_id: x
+  })
+  x = x + 1
+end
+
+y = 75
+while y <= 92
+  testuser2.user_locations.create! ({
+    location_id: y
+  })
+  y = y + 1
+end
+
 
 puts "DONE!"
