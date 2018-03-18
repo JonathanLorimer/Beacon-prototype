@@ -164,7 +164,7 @@ puts testuser1.id
 puts testuser2.id
 
 x = 1
-while x <= 2500
+while x <= 1200
   if (Location.find_by(id: x))
     testuser1.user_locations.create! ({
       location_id: x
