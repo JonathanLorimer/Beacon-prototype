@@ -65,7 +65,7 @@ class SessionsController < ApplicationController
 
       # We organize our locations by neigh id keys     
       locations.each do |location|
-        @achievements[:locations] << location #achievements is returned to the React client
+        @achievements[:locations][location.id] = location #achievements is returned to the React client
         if !locations_by_neigh[location.neighbourhood_id]
           locations_by_neigh[location.neighbourhood_id] = []
         end
@@ -81,6 +81,7 @@ class SessionsController < ApplicationController
         neigh_size = neigh_to_count.locations.count()
         if neigh_size == locations_by_neigh[neigh_id].length
           # You get the Neigh achievements !!!!
+          puts neigh_to_count.name
           neigh_to_return << neigh_to_count
           puts "#{@user.username} gets the #{neigh_to_count.name} achievements !!!!"
           
@@ -96,8 +97,7 @@ class SessionsController < ApplicationController
 
       # We organize our neighbourhoods by neigh id keys     
       neighbourhoods.each do |neighbourhood|
-        @achievements[:neighbourhoods] << neighbourhood #achievements is returned to the React client
-        
+        @achievements[:neighbourhoods][neighbourhood.id] = neighbourhood
         if !neigh_by_city[neighbourhood.city_id]
           neigh_by_city[neighbourhood.city_id] = []
         end
@@ -130,7 +130,7 @@ class SessionsController < ApplicationController
 
       # We organize our cities by neigh id keys     
       cities.each do |city|
-        @achievements[:cities] << city #achievements is returned to the React client
+        @achievements[:cities][city.id] = city #achievements is returned to the React client
         if !cities_by_region[city.region_id]
           cities_by_region[city.region_id] = []
         end
@@ -147,7 +147,7 @@ class SessionsController < ApplicationController
         if region_size == cities_by_region[region_id].length
           # You get the Neigh achievements !!!!
           puts "#{@user.username} gets the #{region_to_count.name} achievements !!!!"
-          @achievements[:regions] << region_to_count  
+          @achievements[:regions][region_id] = region_to_count
         end
       end
 
