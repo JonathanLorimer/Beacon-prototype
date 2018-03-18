@@ -10,11 +10,11 @@ class SessionsController < ApplicationController
 
     if @user && @user.authenticate(params[:password])
       @achievements = {
-        locations: [],
-        neighbourhoods: [],
-        cities: [],
-        regions: [],
-        countries: []
+        locations: {},
+        neighbourhoods: {},
+        cities: {},
+        regions: {},
+        countries: {}
       }
       # session[:user_id] = user.id
       find_achievements(@user)
