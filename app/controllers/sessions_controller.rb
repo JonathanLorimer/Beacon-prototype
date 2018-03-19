@@ -7,7 +7,7 @@ class SessionsController < ApplicationController
   def create
 
     @user = User.find_by_email(params[:email])
-
+    puts @user
     if @user && @user.authenticate(params[:password])
       @achievements = {
         locations: {},
@@ -18,7 +18,7 @@ class SessionsController < ApplicationController
       }
       # session[:user_id] = user.id
       find_achievements(@user)
-
+      puts @user
       render json: {data: [@user, @achievements]}
 
     else
@@ -55,15 +55,15 @@ class SessionsController < ApplicationController
         locations
       else
         false
-      end 
+      end
     end
 
     def find_achievements_neigh(locations)
-      
+
       locations_by_neigh = {}
       neigh_to_return = []
 
-      # We organize our locations by neigh id keys     
+      # We organize our locations by neigh id keys
       locations.each do |location|
         @achievements[:locations][location.id] = location #achievements is returned to the React client
         if !locations_by_neigh[location.neighbourhood_id]
@@ -71,11 +71,11 @@ class SessionsController < ApplicationController
         end
         locations_by_neigh[location.neighbourhood_id] << location
       end
-      
+
       # Now we have our locations arrays ordered by neighbourhood ids as keys
       # We are gonna compare our locations arrays to the size of our neigh/locations join
       locations_by_neigh.each do |neigh_id, location|
-      
+
         neigh_to_count = Neighbourhood.find(neigh_id)
         # How much locations does that neigh have ?
         neigh_size = neigh_to_count.locations.count()
@@ -84,8 +84,8 @@ class SessionsController < ApplicationController
           puts neigh_to_count.name
           neigh_to_return << neigh_to_count
           puts "#{@user.username} gets the #{neigh_to_count.name} achievements !!!!"
-          
-          # Now we want to see you get the City achievements  
+
+          # Now we want to see you get the City achievements
         end
       end
       find_achievements_cities(neigh_to_return)
@@ -95,7 +95,7 @@ class SessionsController < ApplicationController
       neigh_by_city = {}
       cities_to_return = []
 
-      # We organize our neighbourhoods by neigh id keys     
+      # We organize our neighbourhoods by neigh id keys
       neighbourhoods.each do |neighbourhood|
         @achievements[:neighbourhoods][neighbourhood.id] = neighbourhood
         if !neigh_by_city[neighbourhood.city_id]
@@ -103,7 +103,7 @@ class SessionsController < ApplicationController
         end
         neigh_by_city[neighbourhood.city_id] << neighbourhood
       end
-      
+
       # Now we have our neighbourhoods arrays ordered by neighbourhood ids as keys
       # We are gonna compare our neighbourhoods arrays to the size of our neigh/neighbourhoods join
       neigh_by_city.each do |city_id, neighbourhood|
@@ -117,7 +117,7 @@ class SessionsController < ApplicationController
           # You get the Neigh achievements !!!!
           puts "#{@user.username} gets the #{city_to_count.name} achievements !!!!"
           cities_to_return << city_to_count
-          # Now we want to see you get the City achievements     
+          # Now we want to see you get the City achievements
         end
       end
       find_achievements_regions(cities_to_return)
@@ -128,7 +128,7 @@ class SessionsController < ApplicationController
       cities_by_region = {}
       regions_to_return = []
 
-      # We organize our cities by neigh id keys     
+      # We organize our cities by neigh id keys
       cities.each do |city|
         @achievements[:cities][city.id] = city #achievements is returned to the React client
         if !cities_by_region[city.region_id]
@@ -136,10 +136,10 @@ class SessionsController < ApplicationController
         end
         cities_by_region[city.region_id] << city
       end
-      
+
       # Now we have our cities arrays ordered by city ids as keys
       # We are gonna compare our cities arrays to the size of our neigh/cities join
-      cities_by_region.each do |region_id, city|        
+      cities_by_region.each do |region_id, city|
         region_to_count = Region.find(region_id)
 
         # How much cities does that neigh have ?

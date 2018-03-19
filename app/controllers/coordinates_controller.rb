@@ -1,8 +1,8 @@
 class CoordinatesController < ApplicationController
-  
+
   def index
   end
-  
+
   def new
   end
 
@@ -17,7 +17,6 @@ class CoordinatesController < ApplicationController
   ## Else it work and added the achivement
 
     parsedCoord = JSON.parse(request.raw_post)
-   
     # user_id = parsedCoord['user_id'].to_i
     user_id = 1
 
@@ -30,7 +29,7 @@ class CoordinatesController < ApplicationController
         @user = User.find(user_id)
         new_user_location = @user.user_locations.create({
           location: @location
-        })        
+        })
         new_user_location.save!
 
         found_result = "Achievement Added #{@location.name}"
@@ -39,7 +38,8 @@ class CoordinatesController < ApplicationController
         render json: {data: found_result}
       end
     end
-    rescue
+    rescue StandardError => e
+      puts "this is the error: #{e}"
       found_result = "You already visited that Location !!"
       render json: {data: found_result}
   end
@@ -53,7 +53,6 @@ class CoordinatesController < ApplicationController
       @location = false
 
       regions = Region.all
-
       regions.to_a.map do |region|
         if latitude >= region.least_lat && latitude <= region.greatest_lat && longitude >= region.least_lng && longitude <= region.greatest_lng
           @region = region
@@ -62,7 +61,7 @@ class CoordinatesController < ApplicationController
       end
       if @region
         find_city(@latitude, @longitude)
-      else 
+      else
         "Region not found in Canada."
       end
     end
@@ -78,7 +77,7 @@ class CoordinatesController < ApplicationController
       end
       if @city
         find_neigh(@latitude, @longitude)
-      else 
+      else
         "City not found in #{@region.name}, Canada."
       end
     end
@@ -87,32 +86,18 @@ class CoordinatesController < ApplicationController
       neighbourhoods = @city.neighbourhoods.all
 
       neighbourhoods.to_a.map do |neighbourhood|
-        if latitude >= neighbourhood.least_lat && latitude <= neighbourhood.greatest_lat && longitude >= neighbourhood.least_lng && longitude <= neighbourhood.greatest_lng
-          @neighbourhood = neighbourhood
-          break
+        locations = neighbourhood.locations.all
+        locations.to_a.map do |location|
+            if (latitude - location.latitude).abs <= 0.001 && (longitude - location.longitude).abs <= 0.001
+              @location = location
+              return location
+            end
         end
-      end
-      if @neighbourhood
-        find_location(@latitude, @longitude)
-      else 
-        "Neighbourhood not found in #{@rcity.name}, #{region.name}, Canada."
       end
     end
 
     def find_location(latitude, longitude)
-      locations = @neighbourhood.locations.all
 
-      locations.to_a.map do |location|
-        if latitude.round(2) == location.latitude.round(2) && longitude.round(2) == location.longitude.round(2)
-          @location = location
-          break
-        end
-      end
-      if @location
-        @location
-      else 
-        "Location not found in #{@neighbourhood.name}, #{@rcity.name}, #{region.name}, Canada."
-      end
     end
 end
 
