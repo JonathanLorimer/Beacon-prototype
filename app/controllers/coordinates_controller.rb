@@ -86,36 +86,18 @@ class CoordinatesController < ApplicationController
       neighbourhoods = @city.neighbourhoods.all
 
       neighbourhoods.to_a.map do |neighbourhood|
-        if latitude >= neighbourhood.least_lat && latitude <= neighbourhood.greatest_lat && longitude >= neighbourhood.least_lng && longitude <= neighbourhood.greatest_lng
-          @neighbourhood = neighbourhood
-          break
+        locations = neighbourhood.locations.all
+        locations.to_a.map do |location|
+            if (latitude - location.latitude).abs <= 0.001 && (longitude - location.longitude).abs <= 0.001
+              @location = location
+              return location
+            end
         end
-      end
-      if @neighbourhood
-        find_location(@latitude, @longitude)
-      else
-        "Neighbourhood not found in #{@city.name}, #{@region.name}, Canada."
       end
     end
 
     def find_location(latitude, longitude)
-      locations = @neighbourhood.locations.all
-      puts 'in find location'
-      locations.to_a.map do |location|
-        puts "(#{(latitude - location.latitude).abs} <= 0.01 && #{(longitude - location.longitude).abs} <= 0.01"
-        puts "LNG comparing #{longitude.round(3)} to #{location.longitude.round(3)}"
-        # if latitude.round(2) == location.latitude.round(2) && longitude.round(3) == location.longitude.round(3)
-           if (latitude - location.latitude).abs <= 0.01 && (longitude - location.longitude).abs <= 0.01
-          puts location
-          @location = location
-          break
-        end
-      end
-      if @location
-        @location
-      else
-        "Location not found in #{@neighbourhood.name}, #{@city.name}, #{@region.name}, Canada."
-      end
+
     end
 end
 
