@@ -163,15 +163,15 @@ puts "Creating User Locations"
 puts testuser1.id
 puts testuser2.id
 
-x = 1
-while x <= 1200
-  if (Location.find_by(id: x))
-    testuser1.user_locations.create! ({
-      location_id: x
-    })
-  end
-  x = x + 1
-end
+# x = 1
+# while x <= )
+#   if (Location.find_by(id: x))
+#     testuser1.user_locations.create! ({
+#       location_id: x
+#     })
+#   end
+#   x = x + 1
+# end
 
 y = 75
 while y <= 92
