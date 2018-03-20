@@ -18,7 +18,8 @@ class CoordinatesController < ApplicationController
 
     parsedCoord = JSON.parse(request.raw_post)
     # user_id = parsedCoord['user_id'].to_i
-    user_id = 1
+
+    user_id = 1 # DEMO USER, data comes from the React Native dummy app
 
     @latitude = parsedCoord['latitude'].to_f
     @longitude = parsedCoord['longitude'].to_f
