@@ -18,8 +18,14 @@ class SessionsController < ApplicationController
       }
       # session[:user_id] = user.id
       find_achievements(@user)
-      puts @user
-      render json: {data: [@user, @achievements]}
+
+      locations_visited_at = []
+
+      @user.locations.select('locations.*, user_locations.created_at').each do |location|
+        locations_visited_at << {name: location.name, visited_at: location.created_at}
+      end
+
+      render json: {data: [@user, @achievements, locations_visited_at]}
 
     else
     # If user's login doesn't work, send them back to the login form.
