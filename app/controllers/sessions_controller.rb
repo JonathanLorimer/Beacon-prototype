@@ -7,7 +7,6 @@ class SessionsController < ApplicationController
   def create
 
     @user = User.find_by_email(params[:email])
-    puts @user
     if @user && @user.authenticate(params[:password])
       @achievements = {
         locations: {},
@@ -19,10 +18,10 @@ class SessionsController < ApplicationController
       # session[:user_id] = user.id
       find_achievements(@user)
 
-      locations_visited_at = []
+      locations_visited_at = {}
 
       @user.locations.select('locations.*, user_locations.created_at').each do |location|
-        locations_visited_at << {name: location.name, visited_at: location.created_at}
+        locations_visited_at[location.id] = {name: location.name, visited_at: location.created_at}
       end
 
       render json: {data: [@user, @achievements, locations_visited_at]}
